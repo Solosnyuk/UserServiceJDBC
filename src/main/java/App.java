@@ -1,3 +1,8 @@
+import CRUDUthils.RoleCRUD;
+import CRUDUthils.UserCRUD;
+import Model.Role;
+import Model.Users;
+
 import java.util.List;
 
 public class App {
@@ -11,14 +16,14 @@ public class App {
         //CRUDUtils.assignRoleToUser(bobID, userID);
         //CRUDUtils.assignRoleToUser(bobID, userID);
 
-        List<Role> roles = CRUDUtils.getAllRolesDetailed();
+        List<Role> roles = RoleCRUD.getAllRoles();
         System.out.println("============================");
         System.out.println("Доступные роли:" + "\n");
         for (Role role : roles) {
             System.out.println(role);
         }
 
-        List<Users> users = CRUDUtils.getUserData("SELECT * FROM users");
+        List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
         System.out.println("============================");
         System.out.println("Пользователи:" + "\n");
         for (Users user : users) {
