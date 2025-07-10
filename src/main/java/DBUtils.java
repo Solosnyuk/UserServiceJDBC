@@ -3,12 +3,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBUtils {
-    private static String dbURL = "jdbc:h2:mem:test;INIT=RUNSCRIPT FROM 'classpath:init.sql'";
-    private static String dbUsername = "sa";
-    private static String dbPassword = "";
+    private static String dbURL = "jdbc:postgresql://localhost:5432/UserServiceDB";
+    private static String dbUsername = "postgres";
+    private static String dbPassword = "123456";
 
     public static Connection getConnection() {
-
         Connection connection = null;
 
         try {
