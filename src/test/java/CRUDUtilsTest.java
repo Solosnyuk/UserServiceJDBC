@@ -1,3 +1,8 @@
+import CRUDUthils.DataBaseUthils;
+import CRUDUthils.RoleCRUD;
+import CRUDUthils.UserCRUD;
+import Model.Role;
+import Model.Users;
 import org.testng.annotations.*;
 import java.util.List;
 
@@ -5,22 +10,22 @@ public class CRUDUtilsTest {
 
     @BeforeMethod
     public void setup() {
-        CRUDUtils.clearUserData();
+        DataBaseUthils.clearDataBase();
 
-        int adminID = CRUDUtils.createRole("admin");
-        int editorID = CRUDUtils.createRole("editor");
+        int adminID = RoleCRUD.createRole("admin");
+        int editorID = RoleCRUD.createRole("editor");
 
-        int aliceID = CRUDUtils.createUser("Alice");
-        int bobID = CRUDUtils.createUser("Bob");
+        int aliceID = UserCRUD.createUser("Alice");
+        int bobID = UserCRUD.createUser("Bob");
 
-        CRUDUtils.assignRoleToUser(aliceID, adminID);
-        CRUDUtils.assignRoleToUser(aliceID, editorID);
-        CRUDUtils.assignRoleToUser(bobID, editorID);
+        UserCRUD.assignRoleToUser(aliceID, adminID);
+        UserCRUD.assignRoleToUser(aliceID, editorID);
+        UserCRUD.assignRoleToUser(bobID, editorID);
     }
 
     @Test
     public void testGetUserData() {
-        List<Users> users = CRUDUtils.getUserData("SELECT * FROM users");
+        List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
 
         assert users.size() == 2;
 
@@ -36,31 +41,31 @@ public class CRUDUtilsTest {
 
     @Test
     public void testUpdateUserName() {
-        List<Users> users = CRUDUtils.getUserData("SELECT * FROM users");
+        List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
         int aliceId = users.stream().filter(u -> u.getName().equals("Alice")).findFirst().get().getId();
 
-        CRUDUtils.updateUserName(aliceId, "Alicia");
+        UserCRUD.updateUserName(aliceId, "Alicia");
 
-        List<Users> updated = CRUDUtils.getUserData("SELECT * FROM users");
+        List<Users> updated = UserCRUD.getUserData("SELECT * FROM users");
         boolean found = updated.stream().anyMatch(u -> u.getName().equals("Alicia"));
         assert found;
     }
 
     @Test
     public void testDeleteUser() {
-        List<Users> users = CRUDUtils.getUserData("SELECT * FROM users");
+        List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
         int bobId = users.stream().filter(u -> u.getName().equals("Bob")).findFirst().get().getId();
 
-        CRUDUtils.deleteUser(bobId);
+        UserCRUD.deleteUser(bobId);
 
-        List<Users> updated = CRUDUtils.getUserData("SELECT * FROM users");
+        List<Users> updated = UserCRUD.getUserData("SELECT * FROM users");
         assert updated.size() == 1;
         assert updated.stream().noneMatch(u -> u.getName().equals("Bob"));
     }
 
     @Test
-    public void testGetAllRolesDetailed() {
-        List<Role> roles = CRUDUtils.getAllRolesDetailed();
+    public void testGetAllRoles() {
+        List<Role> roles = RoleCRUD.getAllRoles();
         assert roles.size() >= 2;
 
         boolean adminExists = roles.stream().anyMatch(r -> r.getName().equals("admin"));
@@ -72,6 +77,6 @@ public class CRUDUtilsTest {
 
     @AfterMethod
     public void cleanup() {
-        CRUDUtils.clearUserData();
+        DataBaseUthils.clearDataBase();
     }
 }
