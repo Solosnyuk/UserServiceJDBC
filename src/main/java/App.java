@@ -1,3 +1,4 @@
+import CRUDUthils.DataBaseUthils;
 import CRUDUthils.RoleCRUD;
 import CRUDUthils.UserCRUD;
 import Model.Role;
@@ -7,14 +8,14 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) {
-        //int aliceID = CRUDUtils.createUser("Alice");
-        //int bobID = CRUDUtils.createUser("Bob");
-        //int adminIN = CRUDUtils.createRole("admin");
-        //int userID = CRUDUtils.createRole("user");
-
-        //CRUDUtils.assignRoleToUser(aliceID, adminID);
-        //CRUDUtils.assignRoleToUser(bobID, userID);
-        //CRUDUtils.assignRoleToUser(bobID, userID);
+        //int aliceID = UserCRUD.createUser("Alice");
+        //int bobID = UserCRUD.createUser("Bob");
+        //int adminID = RoleCRUD.createRole("admin");
+        //int userID = RoleCRUD.createRole("user");
+//
+        //UserCRUD.assignRoleToUser(aliceID, adminID);
+        //UserCRUD.assignRoleToUser(bobID, userID);
+        //UserCRUD.assignRoleToUser(bobID, userID);
 
         List<Role> roles = RoleCRUD.getAllRoles();
         System.out.println("============================");
@@ -33,8 +34,13 @@ public class App {
         //изменение пользователя по id
         //CRUDUtils.updateUserName(1, "Alicia");
 
+        //удаление роли по id
+        //RoleCRUD.deleteRole();
+
         //удаление пользователя по его id
         //CRUDUtils.deleteUser(1);
 
+        //удалние всей информации
+        //DataBaseUthils.clearDataBase();
     }
 }

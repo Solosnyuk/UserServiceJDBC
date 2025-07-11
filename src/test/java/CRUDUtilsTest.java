@@ -1,22 +1,27 @@
-import CRUDUthils.DataBaseUthils;
-import CRUDUthils.RoleCRUD;
-import CRUDUthils.UserCRUD;
+import CRUDUthils.*;
 import Model.Role;
 import Model.Users;
+import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import java.util.List;
+import java.util.Set;
 
 public class CRUDUtilsTest {
+    int aliceID;
+    int bobID;
+    int adminID;
+    int editorID;
 
     @BeforeMethod
     public void setup() {
         DataBaseUthils.clearDataBase();
 
-        int adminID = RoleCRUD.createRole("admin");
-        int editorID = RoleCRUD.createRole("editor");
+        adminID = RoleCRUD.createRole("admin");
+        editorID = RoleCRUD.createRole("editor");
 
-        int aliceID = UserCRUD.createUser("Alice");
-        int bobID = UserCRUD.createUser("Bob");
+        aliceID = UserCRUD.createUser("Alice");
+        bobID = UserCRUD.createUser("Bob");
 
         UserCRUD.assignRoleToUser(aliceID, adminID);
         UserCRUD.assignRoleToUser(aliceID, editorID);
@@ -25,58 +30,75 @@ public class CRUDUtilsTest {
 
     @Test
     public void testGetUserData() {
-        List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
+            List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
 
-        assert users.size() == 2;
-
-        Users alice = users.stream().filter(u -> u.getName().equals("Alice")).findFirst().orElse(null);
-        assert alice != null;
-        assert alice.getRoles().contains("admin");
-        assert alice.getRoles().contains("editor");
-
-        Users bob = users.stream().filter(u -> u.getName().equals("Bob")).findFirst().orElse(null);
-        assert bob != null;
-        assert bob.getRoles().contains("editor");
+            Assert.assertTrue(
+                    users.size() == 2 &&
+                            users.stream().anyMatch(u ->
+                                    u.getName().equals("Alice") &&
+                                            u.getRoles().containsAll(List.of("admin", "editor"))
+                            ) &&
+                            users.stream().anyMatch(u ->
+                                    u.getName().equals("Bob") &&
+                                            u.getRoles().contains("editor")),
+                    "Данные пользователей не соответствуют ожидаемым"
+            );
     }
 
     @Test
     public void testUpdateUserName() {
-        List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
-        int aliceId = users.stream().filter(u -> u.getName().equals("Alice")).findFirst().get().getId();
+        String newName = "Irina";
+        UserCRUD.updateUserName(aliceID, newName);
 
-        UserCRUD.updateUserName(aliceId, "Alicia");
-
-        List<Users> updated = UserCRUD.getUserData("SELECT * FROM users");
-        boolean found = updated.stream().anyMatch(u -> u.getName().equals("Alicia"));
-        assert found;
+        Assert.assertEquals(
+                UserCRUD.getUserById(aliceID).getName(),
+                "Irina",
+                "Имя пользователя  измениться на " + newName
+        );
     }
 
     @Test
     public void testDeleteUser() {
         List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
-        int bobId = users.stream().filter(u -> u.getName().equals("Bob")).findFirst().get().getId();
+        int bobId = users.stream()
+                .filter(u -> u.getName().equals("Bob"))
+                .findFirst()
+                .get()
+                .getId();
 
         UserCRUD.deleteUser(bobId);
-
         List<Users> updated = UserCRUD.getUserData("SELECT * FROM users");
-        assert updated.size() == 1;
+
         assert updated.stream().noneMatch(u -> u.getName().equals("Bob"));
     }
+
 
     @Test
     public void testGetAllRoles() {
         List<Role> roles = RoleCRUD.getAllRoles();
-        assert roles.size() >= 2;
+        Set<String> requiredRoles = Set.of("admin", "editor");
 
-        boolean adminExists = roles.stream().anyMatch(r -> r.getName().equals("admin"));
-        boolean editorExists = roles.stream().anyMatch(r -> r.getName().equals("editor"));
+        long matchedCount = roles.stream()
+                .map(Role::getName)
+                .filter(requiredRoles::contains)
+                .distinct()
+                .count();
 
-        assert adminExists;
-        assert editorExists;
+        assert matchedCount == requiredRoles.size();
     }
 
     @AfterMethod
     public void cleanup() {
         DataBaseUthils.clearDataBase();
     }
+
+    @AfterMethod
+    public void logAfterTest(ITestResult result) {
+        String status = result.isSuccess() ? "FINISHED" : "FAILED";
+        String testName = result.getMethod().getMethodName();
+        String message = status.equals("FAILED") ? "Тест завершился с ошибкой" : "Тест завершён успешно";
+
+        Logger.log(testName, status, message);
+    }
+
 }

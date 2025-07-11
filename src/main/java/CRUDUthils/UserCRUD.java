@@ -11,7 +11,6 @@ public class UserCRUD {
 
     //создание пользователя
     public static int createUser(String name) {
-        // Проверка на null, пустую строку или строку из пробелов
         if (name == null || name.trim().isEmpty()) {
             System.err.println("Ошибка: имя пользователя не может быть null, пустым или состоять из пробелов");
             return -1;
@@ -39,7 +38,6 @@ public class UserCRUD {
             System.err.println("Ошибка: ID пользователя должен быть положительным числом");
             return;
         }
-
         String sql = "DELETE FROM users WHERE id = ?";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
