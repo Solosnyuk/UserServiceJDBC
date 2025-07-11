@@ -35,7 +35,7 @@ FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;<br>
 ### Диаграмма БД:
 <img width="1371" height="490" alt="image" src="https://github.com/user-attachments/assets/f41f4838-d38b-4d36-9f3d-9de961a66744" />
 
-### Вид  лога в MongoDB Compass
+### Вид  лога в MongoDB Compass:
 <img width="528" height="188" alt="image" src="https://github.com/user-attachments/assets/aa081762-7932-4d47-bac1-265df7a4d3e0" />
 
 
