@@ -1,33 +1,11 @@
 import CRUDUthils.*;
-import Model.Role;
-import Model.Users;
-import org.testng.Assert;
-import org.testng.ITestResult;
-import org.testng.annotations.*;
-import java.util.List;
-import java.util.Set;
+import Model.*;
+import org.testng.*;
+import org.testng.annotations.Test;
 
-public class CRUDUtilsTest {
-    int aliceID;
-    int bobID;
-    int adminID;
-    int editorID;
+import java.util.*;
 
-    @BeforeMethod
-    public void setup() {
-        DataBaseUthils.clearDataBase();
-
-        adminID = RoleCRUD.createRole("admin");
-        editorID = RoleCRUD.createRole("editor");
-
-        aliceID = UserCRUD.createUser("Alice");
-        bobID = UserCRUD.createUser("Bob");
-
-        UserCRUD.assignRoleToUser(aliceID, adminID);
-        UserCRUD.assignRoleToUser(aliceID, editorID);
-        UserCRUD.assignRoleToUser(bobID, editorID);
-    }
-
+public class CRUDUtilsTest extends BaseTest {
     @Test
     public void testGetUserData() {
             List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
@@ -86,19 +64,4 @@ public class CRUDUtilsTest {
 
         assert matchedCount == requiredRoles.size();
     }
-
-    @AfterMethod
-    public void cleanup() {
-        DataBaseUthils.clearDataBase();
-    }
-
-    @AfterMethod
-    public void logAfterTest(ITestResult result) {
-        String status = result.isSuccess() ? "FINISHED" : "FAILED";
-        String testName = result.getMethod().getMethodName();
-        String message = status.equals("FAILED") ? "Тест завершился с ошибкой" : "Тест завершён успешно";
-
-        Logger.log(testName, status, message);
-    }
-
 }
