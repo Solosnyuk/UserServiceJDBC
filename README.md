@@ -3,7 +3,7 @@
 Проект предназначен для освоения JDCB, путем создания CRUD операций для реляционной БД и логирования результатов автотестов в NoSQL БД.
 ***
 
-### Использованные технологии
+### Использованные технологии:
 Maven, JDBC
 
 Базы данных: <br> PostgreSQL, MongoDB
@@ -37,6 +37,12 @@ FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;<br>
 
 ### Вид  лога в MongoDB Compass:
 <img width="528" height="188" alt="image" src="https://github.com/user-attachments/assets/aa081762-7932-4d47-bac1-265df7a4d3e0" />
+
+### Запуск проекта:
+1. Установите PostgreSQL и MongoDB.
+2. Запустите MongoDB на порту 27017.
+3. Создайте таблицы в PostgreSQL с помощью DDL.
+4. Выполните `mvn clean test` для запуска автотестов.
 
 
 
