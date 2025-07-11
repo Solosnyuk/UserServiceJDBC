@@ -77,4 +77,28 @@ public class RoleCRUD {
         }
         return roles;
     }
+
+    //удаление роли по id
+    public static boolean deleteRole(int roleId) {
+        if (roleId <= 0) {
+            System.err.println("Ошибка: ID роли должен быть положительным числом");
+            return false;
+        }
+        String sql = "DELETE FROM roles WHERE id = ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, roleId);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Роль с ID " + roleId + " успешно удалена");
+                return true;
+            } else {
+                System.out.println("Роль с ID " + roleId + " не найдена");
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при удалении роли с ID: " + roleId);
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
