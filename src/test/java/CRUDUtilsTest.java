@@ -1,4 +1,4 @@
-import CRUDUthils.*;
+import DbTools.*;
 import Model.*;
 import org.testng.*;
 import org.testng.annotations.Test;

@@ -1,3 +1,5 @@
+package DbTools;
+
 import com.mongodb.client.*;
 import org.bson.Document;
 
@@ -31,5 +33,15 @@ public class Logger {
     public static void clearLogs() {
         collection.deleteMany(new Document());
         System.out.println("Все логи удалены");
+    }
+
+    public static void logAction(String action, String details) {
+        Map<String, Object> logEntry = new HashMap<>();
+        logEntry.put("timestamp", LocalDateTime.now().toString());
+        logEntry.put("action", action);
+        logEntry.put("details", details);
+
+        collection.insertOne(new Document(logEntry));
+        System.out.println("Действие сохранено: " + logEntry);
     }
 }

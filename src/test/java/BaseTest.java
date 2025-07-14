@@ -1,6 +1,7 @@
-import CRUDUthils.DataBaseUthils;
-import CRUDUthils.RoleCRUD;
-import CRUDUthils.UserCRUD;
+import DbTools.DataBase;
+import DbTools.Logger;
+import DbTools.RoleCRUD;
+import DbTools.UserCRUD;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -19,7 +20,7 @@ public class BaseTest {
 
     @BeforeMethod
     public void setup() {
-        DataBaseUthils.clearDataBase();
+        DataBase.clearDataBase();
 
         adminID = RoleCRUD.createRole("admin");
         editorID = RoleCRUD.createRole("editor");
@@ -34,7 +35,7 @@ public class BaseTest {
 
     @AfterMethod
     public void cleanup() {
-        DataBaseUthils.clearDataBase();
+        DataBase.clearDataBase();
     }
 
     @AfterMethod

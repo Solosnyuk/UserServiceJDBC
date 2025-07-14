@@ -1,16 +1,15 @@
-package CRUDUthils;
+package DbTools;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBUtils {
+public class Connection {
     private static String dbURL = "jdbc:postgresql://localhost:5432/UserServiceDB";
     private static String dbUsername = "postgres";
     private static String dbPassword = "123456";
 
-    public static Connection getConnection() {
-        Connection connection = null;
+    public static java.sql.Connection getConnection() {
+        java.sql.Connection connection = null;
 
         try {
             connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
