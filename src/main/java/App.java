@@ -1,6 +1,5 @@
-import CRUDUthils.DataBaseUthils;
-import CRUDUthils.RoleCRUD;
-import CRUDUthils.UserCRUD;
+import DbTools.RoleCRUD;
+import DbTools.UserCRUD;
 import Model.Role;
 import Model.Users;
 
