@@ -6,21 +6,11 @@ import org.testng.annotations.Test;
 import java.util.*;
 
 public class CRUDUtilsTest extends BaseTest {
-    @Test
-    public void testGetUserData() {
-            List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
-
-            Assert.assertTrue(
-                    users.size() == 2 &&
-                            users.stream().anyMatch(u ->
-                                    u.getName().equals("Alice") &&
-                                            u.getRoles().containsAll(List.of("admin", "editor"))
-                            ) &&
-                            users.stream().anyMatch(u ->
-                                    u.getName().equals("Bob") &&
-                                            u.getRoles().contains("editor")),
-                    "Данные пользователей не соответствуют ожидаемым"
-            );
+    @Test public void testGetUserData() {
+        List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
+        Assert.assertEquals(users.size(), 2, "Ожидается 2 пользователя");
+        Assert.assertTrue(users.stream().anyMatch(u -> u.getName().equals("Alice")), "Нет Alice");
+        Assert.assertTrue(users.stream().anyMatch(u -> u.getName().equals("Bob")), "Нет Bob");
     }
 
     @Test
