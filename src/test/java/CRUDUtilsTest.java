@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import java.util.*;
 
 public class CRUDUtilsTest extends BaseTest {
+
     @Test public void testGetUserData() {
         List<Users> users = UserCRUD.getUserData("SELECT * FROM users");
         Assert.assertEquals(users.size(), 2, "Ожидается 2 пользователя");
